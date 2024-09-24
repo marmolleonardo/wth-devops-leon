@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { isValidObjectId } from 'mongoose'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import dbConnect from '../../lib/dbConnect'
@@ -10,6 +11,11 @@ const PetPage = ({ pet }) => {
   const [message, setMessage] = useState('')
   const handleDelete = async () => {
     const petID = router.query.id
+
+    if (!isValidObjectId(petID)) {
+      setMessage('Invalid pet ID.')
+      return
+    }
 
     try {
       await fetch(`/api/pets/${petID}`, {
