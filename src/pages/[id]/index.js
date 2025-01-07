@@ -18,6 +18,12 @@ const PetPage = ({ pet }) => {
     }
 
     try {
+      const res = await fetch(`/api/pets/${petID}/exists`);
+      const data = await res.json();
+      if (!data.exists) {
+        setMessage('Pet not found.');
+        return;
+      }
       await fetch(`/api/pets/${petID}`, {
         method: 'Delete',
       })
